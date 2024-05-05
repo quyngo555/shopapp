@@ -27,7 +27,7 @@ public class CategoryService implements ICategoryService {
     @Transactional
     @Override
     public CategoryResponse createCategory(CategoryRequest request) {
-        if(categoryRepository.existByCategoryName(request.getName()))
+        if(categoryRepository.existsByName(request.getName()))
             throw new AppException(ErrorCode.CATEGORY_EXISTED);
         Category category = categoryMapper.toCategory(request);
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
