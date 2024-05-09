@@ -3,14 +3,14 @@ package com.project.shopapp.service.impl;
 import com.project.shopapp.dto.request.CategoryRequest;
 import com.project.shopapp.dto.response.CategoryResponse;
 import com.project.shopapp.entity.Category;
-import com.project.shopapp.exception.AppException;
-import com.project.shopapp.exception.ErrorCode;
+import com.project.shopapp.exception.DataNotFoundException;
 import com.project.shopapp.mapper.CategoryMapper;
 import com.project.shopapp.repository.CategoryRepository;
 import com.project.shopapp.service.ICategoryService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +28,7 @@ public class CategoryService implements ICategoryService {
     @Override
     public CategoryResponse createCategory(CategoryRequest request) {
         if(categoryRepository.existsByName(request.getName()))
-            throw new AppException(ErrorCode.CATEGORY_EXISTED);
+            throw new DataIntegrityViolationException("Category already exists");
         Category category = categoryMapper.toCategory(request);
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
@@ -36,7 +36,7 @@ public class CategoryService implements ICategoryService {
     @Override
     public CategoryResponse getCategoryById(long id) {
         return categoryMapper.toCategoryResponse(categoryRepository.findById(id).orElseThrow(
-                () -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED)
+                () -> new DataNotFoundException("Category not found with id" + id)
         ));
     }
 
@@ -49,10 +49,10 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public CategoryResponse updateCategory(long categoryId, CategoryRequest request) {
-        Category category = categoryRepository.findById(categoryId).orElseThrow(
-                () -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
-        category = categoryMapper.toCategory(request);
-        return categoryMapper.toCategoryResponse(category);
+        Category oldCategory = categoryRepository.findById(categoryId).orElseThrow(
+                () -> new DataNotFoundException("Category not found with id: " + categoryId));
+        oldCategory.setName(request.getName());
+        return categoryMapper.toCategoryResponse(categoryRepository.save(oldCategory));
     }
 
     @Override
