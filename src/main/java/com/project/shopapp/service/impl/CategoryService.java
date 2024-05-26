@@ -3,10 +3,12 @@ package com.project.shopapp.service.impl;
 import com.project.shopapp.dto.request.CategoryRequest;
 import com.project.shopapp.dto.response.CategoryResponse;
 import com.project.shopapp.entity.Category;
-import com.project.shopapp.exception.DataNotFoundException;
+import com.project.shopapp.exception.AppException;
+import com.project.shopapp.exception.ErrorCode;
 import com.project.shopapp.mapper.CategoryMapper;
 import com.project.shopapp.repository.CategoryRepository;
 import com.project.shopapp.service.ICategoryService;
+import com.project.shopapp.utils.LocalizationUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,6 +25,7 @@ public class CategoryService implements ICategoryService {
 
     CategoryRepository categoryRepository;
     CategoryMapper categoryMapper;
+    LocalizationUtils localizationUtils;
 
     @Transactional
     @Override
@@ -36,7 +39,7 @@ public class CategoryService implements ICategoryService {
     @Override
     public CategoryResponse getCategoryById(long id) {
         return categoryMapper.toCategoryResponse(categoryRepository.findById(id).orElseThrow(
-                () -> new DataNotFoundException("Category not found with id" + id)
+                () -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED)
         ));
     }
 
@@ -50,7 +53,7 @@ public class CategoryService implements ICategoryService {
     @Override
     public CategoryResponse updateCategory(long categoryId, CategoryRequest request) {
         Category oldCategory = categoryRepository.findById(categoryId).orElseThrow(
-                () -> new DataNotFoundException("Category not found with id: " + categoryId));
+                () -> new AppException(ErrorCode.CATEGORY_NOT_EXISTED));
         oldCategory.setName(request.getName());
         return categoryMapper.toCategoryResponse(categoryRepository.save(oldCategory));
     }

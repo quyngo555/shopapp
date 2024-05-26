@@ -4,14 +4,18 @@ import com.project.shopapp.dto.request.ProductRequest;
 import com.project.shopapp.dto.response.CategoryResponse;
 import com.project.shopapp.dto.response.ProductResponse;
 import com.project.shopapp.entity.Product;
-import com.project.shopapp.exception.DataNotFoundException;
+import com.project.shopapp.enums.MessageKeys;
+import com.project.shopapp.exception.AppException;
+import com.project.shopapp.exception.ErrorCode;
 import com.project.shopapp.mapper.ProductMapper;
 import com.project.shopapp.repository.ProductRepository;
 import com.project.shopapp.service.ICategoryService;
 import com.project.shopapp.service.IProductService;
+import com.project.shopapp.utils.LocalizationUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,10 +30,12 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class ProductService implements IProductService {
     ICategoryService categoryService;
     ProductRepository productRepository;
     ProductMapper productMapper;
+    LocalizationUtils localizationUtils;
 
     @Override
     public ProductResponse createProduct(ProductRequest request) {
@@ -40,8 +46,9 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductResponse getProductById(Long id) {
+
         Product product = productRepository.findById(id).orElseThrow(
-                () -> new DataNotFoundException("Product not found with id: " + id)
+                () -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED, id)
         );
         return productMapper.toProductResponse(product);
     }
@@ -58,8 +65,11 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductResponse updateProduct(Long id, ProductRequest request) {
+
         Product product = productRepository.findById(id).orElseThrow(
-                () -> new DataNotFoundException("Product not found with id: " + id)
+
+
+                () -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)
         );
         productMapper.updateProduct(product, request);
         return productMapper.toProductResponse(productRepository.save(product));
@@ -67,9 +77,10 @@ public class ProductService implements IProductService {
 
     @Override
     @Transactional
-    public void deleteProduct(Long id) {
+    public String deleteProduct(Long id) {
         Optional<Product> product = productRepository.findById(id);
         product.ifPresent(productRepository::delete);
+        return "Delete product successfully!";
     }
 
     @Override

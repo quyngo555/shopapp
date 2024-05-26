@@ -1,8 +1,6 @@
 package com.project.shopapp.service;
 
 import com.project.shopapp.dto.response.ProductImageResponse;
-import com.project.shopapp.dto.response.ProductResponse;
-import com.project.shopapp.exception.InvalidParamException;
 import org.springframework.core.io.UrlResource;
 import org.springframework.web.multipart.MultipartFile;
 

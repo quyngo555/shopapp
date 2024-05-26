@@ -1,11 +1,10 @@
 package com.project.shopapp.service.impl;
 
 import com.project.shopapp.dto.response.ProductImageResponse;
-import com.project.shopapp.dto.response.ProductResponse;
 import com.project.shopapp.entity.Product;
 import com.project.shopapp.entity.ProductImage;
-import com.project.shopapp.exception.DataNotFoundException;
-import com.project.shopapp.exception.InvalidParamException;
+import com.project.shopapp.exception.AppException;
+import com.project.shopapp.exception.ErrorCode;
 import com.project.shopapp.mapper.ProductImageMapper;
 import com.project.shopapp.repository.ProductImageRepository;
 import com.project.shopapp.repository.ProductRepository;
@@ -15,8 +14,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,7 +42,7 @@ public class ProductImageService implements IProductImageService {
     @Transactional
     public void deleteProductImage(Long id) throws IOException {
         ProductImage productImage = productImageRepository.findById(id).orElseThrow(
-                () -> new DataNotFoundException("ProductImage not found with id: " + id)
+                () -> new AppException(ErrorCode.PRODUCT_IMAGE_NOT_EXISTED)
         );
         productImageRepository.delete(productImage);
         String filename = productImage.getImageUrl();
@@ -68,11 +65,11 @@ public class ProductImageService implements IProductImageService {
     @Transactional
     public List<ProductImageResponse> createProductImage(long productId, List<MultipartFile> files) throws Exception {
         Product existingProduct = productRepository.findById(productId).orElseThrow(
-                () -> new DataNotFoundException("Product not found with id: " + productId)
+                () -> new AppException(ErrorCode.PRODUCT_NOT_EXISTED)
         );
         files = files == null ? new ArrayList<MultipartFile>() : files;
         if(files.size() > ProductImage.MAXIMUM_IMAGES_PER_PRODUCT){
-            throw new InvalidParamException("You can only upload maximum 5 images");
+            throw new AppException(ErrorCode.PRODUCT_IMAGE_UPLOAD_IMAGES_MAX_5);
         }
         List<ProductImage> productImages = new ArrayList<>();
         for (MultipartFile file : files) {
@@ -81,7 +78,7 @@ public class ProductImageService implements IProductImageService {
             }
             // Kiểm tra kích thước file và định dạng
             if(file.getSize() > 10 * 1024 * 1024) { // Kích thước > 10MB
-                throw new InvalidParamException("File is too large! Maximum size is 10MB");
+                throw new AppException(ErrorCode.PRODUCT_IMAGE_UPLOAD_IMAGES_FILE_LARGE);
             }
             String contentType = file.getContentType();
             if(contentType == null || !contentType.startsWith("image/")) {
@@ -97,7 +94,7 @@ public class ProductImageService implements IProductImageService {
                     .build();
             int size = productImageRepository.findByProductId(productId).size();
             if(size >= ProductImage.MAXIMUM_IMAGES_PER_PRODUCT) {
-                throw new InvalidParamException(
+                throw new RuntimeException(
                         "Number of images must be <= "
                                 +ProductImage.MAXIMUM_IMAGES_PER_PRODUCT);
             }
@@ -125,7 +122,7 @@ public class ProductImageService implements IProductImageService {
             if (resource.exists()) {
                 return resource;
             } else {
-                throw new DataNotFoundException("Could not find image with name: " + imageName);
+                throw new AppException(ErrorCode.PRODUCT_IMAGE_NOT_EXISTED);
             }
         } catch (Exception e) {
             throw new Exception("Error occurred while retrieving image: " + e.getMessage());
@@ -140,7 +137,7 @@ public class ProductImageService implements IProductImageService {
         String filename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         // Thêm UUID vào trước tên file để đảm bảo tên file là duy nhất
         //String uniqueFilename = UUID.randomUUID().toString() + "_" + filename; //old code, not good
-        String uniqueFilename = UUID.randomUUID().toString() + "_" + System.nanoTime(); // Convert nanoseconds to microseconds
+        String uniqueFilename = UUID.randomUUID() + "_" + System.nanoTime(); // Convert nanoseconds to microseconds
         // Đường dẫn đến thư mục mà bạn muốn lưu file
         java.nio.file.Path uploadDir = Paths.get(UPLOADS_FOLDER);
         // Kiểm tra và tạo thư mục nếu nó không tồn tại

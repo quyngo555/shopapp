@@ -14,7 +14,7 @@ public interface IProductService {
     public Page<ProductResponse> getAllProducts(String keyword,
                                                 Long categoryId, int page, int limit);
     ProductResponse updateProduct(Long id, ProductRequest request);
-    void deleteProduct(Long id);
+    String deleteProduct(Long id);
     boolean existsByName(String name);
 
     List<ProductResponse> findProductsByIds(String ids);

@@ -11,7 +11,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductImage {
     public static final int MAXIMUM_IMAGES_PER_PRODUCT = 6;
@@ -22,7 +23,6 @@ public class ProductImage {
     @ManyToOne
     @JoinColumn(name = "product_id")
     @JsonIgnore
-    @ToString.Exclude
     Product product;
 
     @Column(name = "image_url", length = 300)

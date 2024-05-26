@@ -11,6 +11,20 @@ spring:
       hibernate:
       dialect: org.hibernate.dialect.MySQL8Dialect
       format_sql: true
+  flyway:
+    locations: classpath:/db/migration,classpath:/dev/db/migration
+    #Phiên bản baseline sẽ = 1 và không thực hiện bất kỳ thay đổi nào trong DB
+    baseline-on-migrate: true
+    baseline-version: 0
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    default-locale: en
 
 api:
   prefix: /api/v1
+
+jwt:
+  valid-duration: 2592000 #30 days = 30 * 24 * 60 * 60
+  refreshable-duration: 5184000 #60 days = 60 * 24 * 60 * 60
+  signerKey: "1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij"

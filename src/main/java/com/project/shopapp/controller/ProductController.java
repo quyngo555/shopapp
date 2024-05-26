@@ -1,7 +1,7 @@
 package com.project.shopapp.controller;
 
 import com.project.shopapp.dto.request.ProductRequest;
-import com.project.shopapp.dto.response.ResponseObject;
+import com.project.shopapp.dto.response.ApiResponse;
 import com.project.shopapp.service.IProductImageService;
 import com.project.shopapp.service.IProductService;
 import jakarta.validation.Valid;
@@ -24,7 +24,7 @@ public class ProductController {
     IProductImageService productImageService;
     @PostMapping("")
     public ResponseEntity<?> createProduct(@RequestBody @Valid ProductRequest request){
-        return ResponseEntity.ok().body(ResponseObject.builder()
+        return ResponseEntity.ok().body(ApiResponse.builder()
                 .data(productService.createProduct(request))
                 .build());
     }
@@ -36,7 +36,7 @@ public class ProductController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit
     ){
-        return ResponseEntity.ok().body(ResponseObject.builder()
+        return ResponseEntity.ok().body(ApiResponse.builder()
                 .data(productService.getAllProducts(keyword, categoryId, page, limit))
                 .build());
     }
@@ -44,7 +44,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getProductById(@PathVariable("id") Long id){
 
-        return ResponseEntity.ok().body(ResponseObject.builder()
+        return ResponseEntity.ok().body(ApiResponse.builder()
                 .data(productService.getProductById(id))
                 .build());
     }
@@ -54,7 +54,7 @@ public class ProductController {
             @PathVariable("id") Long id,
             @RequestBody @Valid ProductRequest request
     ){
-        return ResponseEntity.ok().body(ResponseObject.builder()
+        return ResponseEntity.ok().body(ApiResponse.builder()
                 .data(productService.updateProduct(id, request))
                 .build());
     }
@@ -62,26 +62,25 @@ public class ProductController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProduct(@PathVariable("id") Long id){
         productService.deleteProduct(id);
-        return ResponseEntity.ok().body(ResponseObject.builder()
-                .data(null)
+        return ResponseEntity.ok().body(ApiResponse.builder()
                 .message(String.format("Product with id = %d deleted successfully", id))
                 .build());
     }
 
     @GetMapping("/by-ids")
     public ResponseEntity<?>  getProductsByIds(@RequestParam("ids") String ids){
-        return ResponseEntity.ok().body(ResponseObject.builder()
+        return ResponseEntity.ok().body(ApiResponse.builder()
                 .data(productService.findProductsByIds(ids))
                 .build());
     }
 
     @PostMapping(value = "/{id}/uploads",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseObject> uploadImages(
+    public ResponseEntity<?> uploadImages(
             @PathVariable("id") Long productId,
             @ModelAttribute("files") List<MultipartFile> files
     ) throws Exception{
-        return ResponseEntity.ok().body(ResponseObject.builder()
+        return ResponseEntity.ok().body(ApiResponse.builder()
                 .data(productImageService.createProductImage(productId, files))
                 .build());
     }
