@@ -1,4 +1,4 @@
-package com.project.shopapp.service.impl;
+package com.project.shopapp.service.productImage;
 
 import com.project.shopapp.dto.response.ProductImageResponse;
 import com.project.shopapp.entity.Product;
@@ -8,7 +8,6 @@ import com.project.shopapp.exception.ErrorCode;
 import com.project.shopapp.mapper.ProductImageMapper;
 import com.project.shopapp.repository.ProductImageRepository;
 import com.project.shopapp.repository.ProductRepository;
-import com.project.shopapp.service.IProductImageService;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

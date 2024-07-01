@@ -1,4 +1,4 @@
-package com.project.shopapp.service;
+package com.project.shopapp.service.auth;
 
 import com.nimbusds.jose.JOSEException;
 import com.project.shopapp.dto.request.AuthenticationRequest;

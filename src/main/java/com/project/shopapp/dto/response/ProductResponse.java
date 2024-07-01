@@ -1,12 +1,12 @@
 package com.project.shopapp.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.shopapp.entity.ProductImage;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 @Data
 @NoArgsConstructor
@@ -19,10 +19,8 @@ public class ProductResponse extends BaseResponse {
     Float price;
     String thumbnail;
     String description;
-
-    @JsonProperty("category_id")
     Long categoryId;
+    List<ProductImageResponse> productImages;
+    List<CommentResponse> comments;
 
-    @JsonProperty("product_images")
-    List<ProductImage> productImages = new ArrayList<>();
 }

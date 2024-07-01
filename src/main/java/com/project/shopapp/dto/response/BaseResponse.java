@@ -8,10 +8,10 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 @Data
-@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass
+@SuperBuilder
 public class BaseResponse {
     @JsonProperty("created_at")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", shape = JsonFormat.Shape.STRING)

@@ -1,15 +1,17 @@
 package com.project.shopapp.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.project.shopapp.dto.request.ProductRequest;
 import com.project.shopapp.dto.response.ApiResponse;
-import com.project.shopapp.service.IProductImageService;
-import com.project.shopapp.service.IProductService;
+import com.project.shopapp.service.productImage.IProductImageService;
+import com.project.shopapp.service.product.IProductService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +37,7 @@ public class ProductController {
             @RequestParam(defaultValue = "0", name = "category_id") Long categoryId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int limit
-    ){
+    ) throws JsonProcessingException {
         return ResponseEntity.ok().body(ApiResponse.builder()
                 .data(productService.getAllProducts(keyword, categoryId, page, limit))
                 .build());
@@ -90,6 +92,24 @@ public class ProductController {
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(productImageService.getProductImage(imageName));
+    }
+
+    @PostMapping("/like/{productId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public ResponseEntity<?> likeProduct(@PathVariable Long productId) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .data(productService.likeProduct(productId))
+                .message("Like product successfully")
+                .build());
+    }
+
+    @PostMapping("/favorite-products")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
+    public ResponseEntity<?> findFavoriteProductsByUserId() throws Exception {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .data(productService.findFavoriteProductsByUserId())
+                .message("Favorite products retrieved successfully")
+                .build());
     }
 
 }

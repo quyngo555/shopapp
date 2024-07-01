@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
         ApiResponse apiResponse = new ApiResponse();
 
         apiResponse.setCode(errorCode.getCode());
-        apiResponse.setMessage(localizationUtils.getLocalizedMessage(errorCode.getMessage().getMessageKey(), exception.getParams()));
+        apiResponse.setMessage(localizationUtils.getLocalizedMessage(errorCode.getMessage(), exception.getParams()));
 
         return ResponseEntity.status(errorCode.getStatusCode()).body(apiResponse);
     }
@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(errorCode.getStatusCode())
                 .body(ApiResponse.builder()
                         .code(errorCode.getCode())
-                        .message(localizationUtils.getLocalizedMessage(String.valueOf(errorCode.getMessage())))
+                        .message(localizationUtils.getLocalizedMessage(errorCode.getMessage()))
                         .build());
     }
 

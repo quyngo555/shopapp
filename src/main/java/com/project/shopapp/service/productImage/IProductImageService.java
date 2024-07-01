@@ -1,4 +1,4 @@
-package com.project.shopapp.service;
+package com.project.shopapp.service.productImage;
 
 import com.project.shopapp.dto.response.ProductImageResponse;
 import org.springframework.core.io.UrlResource;

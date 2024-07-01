@@ -1,9 +1,7 @@
 package com.project.shopapp.configuration;
 
-import com.nimbusds.jose.JOSEException;
 import com.project.shopapp.dto.request.IntrospectRequest;
-import com.project.shopapp.service.IAuthenticationService;
-import com.project.shopapp.service.impl.AuthenticationService;
+import com.project.shopapp.service.auth.IAuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
@@ -14,7 +12,6 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
-import java.text.ParseException;
 import java.util.Objects;
 
 @Component

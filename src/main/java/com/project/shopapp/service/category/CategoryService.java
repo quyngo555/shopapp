@@ -1,4 +1,4 @@
-package com.project.shopapp.service.impl;
+package com.project.shopapp.service.category;
 
 import com.project.shopapp.dto.request.CategoryRequest;
 import com.project.shopapp.dto.response.CategoryResponse;
@@ -7,7 +7,6 @@ import com.project.shopapp.exception.AppException;
 import com.project.shopapp.exception.ErrorCode;
 import com.project.shopapp.mapper.CategoryMapper;
 import com.project.shopapp.repository.CategoryRepository;
-import com.project.shopapp.service.ICategoryService;
 import com.project.shopapp.utils.LocalizationUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

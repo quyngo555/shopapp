@@ -5,7 +5,7 @@ import com.project.shopapp.dto.request.AuthenticationRequest;
 import com.project.shopapp.dto.request.IntrospectRequest;
 import com.project.shopapp.dto.request.RefreshTokenRequest;
 import com.project.shopapp.dto.response.ApiResponse;
-import com.project.shopapp.service.IAuthenticationService;
+import com.project.shopapp.service.auth.IAuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;

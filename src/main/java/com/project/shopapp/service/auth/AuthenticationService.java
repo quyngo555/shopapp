@@ -1,4 +1,4 @@
-package com.project.shopapp.service.impl;
+package com.project.shopapp.service.auth;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -16,7 +16,6 @@ import com.project.shopapp.exception.AppException;
 import com.project.shopapp.exception.ErrorCode;
 import com.project.shopapp.repository.TokenRepository;
 import com.project.shopapp.repository.UserRepository;
-import com.project.shopapp.service.IAuthenticationService;
 import com.project.shopapp.utils.LocalizationUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;

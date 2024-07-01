@@ -1,9 +1,9 @@
 package com.project.shopapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -11,10 +11,11 @@ import java.util.List;
 @Table(name = "products")
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
 @Getter
 @Setter
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+//@EntityListeners(ProductListener.class)
 public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,5 +39,15 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product",
             cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
+    @JsonManagedReference
     List<ProductImage> productImages;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "product_reference")
+    List<Comment> comments;
+
+    @OneToMany(mappedBy = "product",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    List<Favorite> favorites;
 }

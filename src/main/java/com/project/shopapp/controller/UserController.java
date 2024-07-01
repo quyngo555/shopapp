@@ -2,7 +2,7 @@ package com.project.shopapp.controller;
 
 import com.project.shopapp.dto.request.UserCreationRequest;
 import com.project.shopapp.dto.response.ApiResponse;
-import com.project.shopapp.service.IUserService;
+import com.project.shopapp.service.user.IUserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

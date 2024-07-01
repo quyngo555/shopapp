@@ -2,17 +2,20 @@ package com.project.shopapp.controller;
 
 import com.project.shopapp.dto.request.CategoryRequest;
 import com.project.shopapp.dto.response.ApiResponse;
-import com.project.shopapp.service.impl.CategoryService;
+import com.project.shopapp.service.category.ICategoryService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("${api.prefix}/categories")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CategoryController {
-    private final CategoryService categoryService;
+    ICategoryService categoryService;
     @PostMapping
     public ResponseEntity<?> createCategory(@Valid @RequestBody CategoryRequest request){
         return ResponseEntity.ok().body(ApiResponse.builder()

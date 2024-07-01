@@ -1,7 +1,5 @@
 package com.project.shopapp.dto.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.project.shopapp.enums.Role;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -14,29 +12,29 @@ import java.util.Set;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
-    @JsonProperty("id")
-    private Long id;
+//    @JsonProperty("id")
+    Long id;
 
-    @JsonProperty("fullname")
-    private String fullName;
+//    @JsonProperty("fullname")
+    String fullName;
 
-    @JsonProperty("phone_number")
-    private String phoneNumber;
+//    @JsonProperty("phone_number")
+    String phoneNumber;
 
-    @JsonProperty("address")
-    private String address;
+//    @JsonProperty("address")
+    String address;
 
-    @JsonProperty("is_active")
-    private boolean active;
+//    @JsonProperty("is_active")
+    boolean active;
 
-    @JsonProperty("date_of_birth")
-    private Date dateOfBirth;
+//    @JsonProperty("date_of_birth")
+    Date dateOfBirth;
 
-    @JsonProperty("facebook_account_id")
-    private int facebookAccountId;
+//    @JsonProperty("facebook_account_id")
+    int facebookAccountId;
 
-    @JsonProperty("google_account_id")
-    private int googleAccountId;
-    @JsonProperty("roles")
+//    @JsonProperty("google_account_id")
+    int googleAccountId;
+//    @JsonProperty("roles")
     Set<RoleResponse> roles;
 }

@@ -1,8 +1,6 @@
 package com.project.shopapp.enums;
 
-import com.project.shopapp.utils.LocalizationUtils;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 @Getter
 public enum MessageKeys {
 
@@ -25,6 +23,13 @@ public enum MessageKeys {
     CATEGORY_NOT_EXISTED("category.category_not_existed"),
     PRODUCT_NOT_EXISTED("product.not_existed"),
     PRODUCT_IMAGE_NOT_EXISTED("product_image.not_existed"),
+    ORDERDETAIL_NOT_EXISTED("order_detail.get_order_detail.not_existed"),
+    ORDER_SHIPPINGDATE_INVALID("order.shipping_date.set_shippingdate_failed"),
+    ORDER_NOT_EXISTED("order.get_order.not_found"),
+    COUPON_NOT_EXISTED("coupon.get_coupon.not_existed"),
+    COUPON_NOT_ACTIVE("coupon.get_coupon.not_active"),
+    COMMENT_NOT_EXISTED("comment.get_comment.not_existed"),
+    COMMENT_UPDATE_FAILED("comment.update_comment.update_failed")
     ;
 
 

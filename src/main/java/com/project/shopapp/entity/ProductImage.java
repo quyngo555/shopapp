@@ -1,6 +1,6 @@
 package com.project.shopapp.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -22,7 +22,7 @@ public class ProductImage {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonIgnore
+    @JsonBackReference
     Product product;
 
     @Column(name = "image_url", length = 300)

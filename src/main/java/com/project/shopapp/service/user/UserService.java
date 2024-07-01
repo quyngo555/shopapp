@@ -1,4 +1,4 @@
-package com.project.shopapp.service.impl;
+package com.project.shopapp.service.user;
 
 import com.project.shopapp.dto.request.UserCreationRequest;
 import com.project.shopapp.dto.response.UserResponse;
@@ -10,7 +10,7 @@ import com.project.shopapp.mapper.UserMapper;
 import com.project.shopapp.repository.RoleRepository;
 import com.project.shopapp.repository.TokenRepository;
 import com.project.shopapp.repository.UserRepository;
-import com.project.shopapp.service.IUserService;
+import com.project.shopapp.service.user.IUserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -62,6 +63,10 @@ public class UserService implements IUserService {
     public UserResponse getUserDetailsFromToken(){
         var context = SecurityContextHolder.getContext();
         String email = context.getAuthentication().getName();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();;
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            return (UserResponse) authentication.getPrincipal();
+        }
 
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new AppException(ErrorCode.USER_NOT_EXISTED));

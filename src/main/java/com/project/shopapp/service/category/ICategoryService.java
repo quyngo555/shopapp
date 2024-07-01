@@ -1,4 +1,4 @@
-package com.project.shopapp.service;
+package com.project.shopapp.service.category;
 
 import com.project.shopapp.dto.request.CategoryRequest;
 import com.project.shopapp.dto.response.CategoryResponse;
